@@ -48,9 +48,13 @@ export async function updateCheeseById(id, body) {
 
 export async function deleteCheeseById(id) {
   // Query the database to delete the resource and return the deleted resource or null
-  // const deletedCheese = await getCheeseById(id);
-  // const wine_id = deletedCheese.wine_id;
-  const queryText = "DELETE FROM cheeses WHERE wine.id IN (SELECT id FROM wines WHERE cheeses_id = $1) RETURNING *;";
-  const result = await pool.query(queryText, [id]);
+  // Delete related entries in the wines table first
+  const deleteWinesQuery = "DELETE FROM wines WHERE cheeses_id = $1;";
+  await pool.query(deleteWinesQuery, [id]);
+
+  // Then delete the entry in the cheeses table
+  const deleteCheeseQuery = "DELETE FROM cheeses WHERE id = $1 RETURNING *;";
+  const result = await pool.query(deleteCheeseQuery, [id]);
+
   return result.rows[0] || null;
 }
