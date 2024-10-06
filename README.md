@@ -5,7 +5,7 @@ This project is an API built with Express.js for managing wine and cheese pairin
 
 ## Technologies Used
 - **Database:** PostgreSQL
-- **Middleware:** Express.js
+- **Backend:** Node.js, Express
 - **Languages:** JavaScript, SQL
 
 ## Database Schema
